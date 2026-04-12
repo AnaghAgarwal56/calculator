@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Pro Calculator</title>
+
+    <style>
+        body {
+            font-family: Arial;
+            text-align: center;
+            margin-top: 40px;
+            transition: 0.5s;
+        }
+
+        .box {
+            background: rgba(255,255,255,0.1);
+            padding: 30px;
+            border-radius: 15px;
+            display: inline-block;
+            backdrop-filter: blur(10px);
+        }
+
+        input, select, button {
+            padding: 12px;
+            font-size: 18px;
+            margin: 10px;
+            width: 220px;
+            border-radius: 10px;
+            border: none;
+        }
+
+        button {
+            background: #4CAF50;
+            color: white;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #45a049;
+        }
+
+        .history {
+            margin-top: 20px;
+            text-align: left;
+            max-height: 150px;
+            overflow-y: auto;
+        }
+    </style>
+
+    <script>
+        function getRandomColor() {
+            return "#" + Math.floor(Math.random()*16777215).toString(16).padStart(6,'0');
+        }
+
+        function getContrastColor(hex) {
+            hex = hex.replace("#", "");
+            let r = parseInt(hex.substring(0,2), 16);
+            let g = parseInt(hex.substring(2,4), 16);
+            let b = parseInt(hex.substring(4,6), 16);
+            let brightness = (r*299 + g*587 + b*114)/1000;
+            return brightness > 128 ? "black" : "white";
+        }
+
+        window.onload = function() {
+            let bg = getRandomColor();
+            document.body.style.background = bg;
+            document.body.style.color = getContrastColor(bg);
+        }
+    </script>
+
+</head>
+
+<body>
+
+<div class="box">
+    <h1>🔥 Pro Calculator</h1>
+
+    <form action="/calculate" method="post">
+        <input type="number" name="num1" step="any" value="{{ num1 }}" required>
+
+        <select name="operation">
+            <option value="add">+</option>
+            <option value="subtract">-</option>
+            <option value="multiply">*</option>
+            <option value="divide">/</option>
+            <option value="power">^</option>
+        </select>
+
+        <input type="number" name="num2" step="any" value="{{ num2 }}" required>
+
+        <div>
+            <a href="/clear"><button type="button">Clear Inputs</button></a>
+            <a href="/clear_history"><button type="button">Clear History</button></a>
+        </div>
+        <button type="submit">Calculate</button>
+    </form>
+
+    {% if result is not none %}
+        <h2>Result: {{ result }}</h2>
+    {% endif %}
+
+    <div class="history">
+        <h3>History:</h3>
+        {% for item in history %}
+            <p>
+                {{ item }}
+                <a href="/delete/{{ loop.index0 }}">
+                    <button style="width:auto;">❌</button>
+                </a>
+            </p>
+        {% endfor %}
+    </div>
+</div>
+
+</body>
+</html>
