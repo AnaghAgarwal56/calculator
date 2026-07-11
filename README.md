@@ -46,12 +46,7 @@ python app.py
 ACCESSING THE APPLICATION
 --------------------------------------------------
 
-After running the server, you will see a message like:
-
-Running on http://127.0.0.1:5000/
-
-Copy this URL and paste it into your web browser.
-
+Running on 
 --------------------------------------------------
 FEATURES
 --------------------------------------------------
